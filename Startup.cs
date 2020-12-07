@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NoMoreJockeys.Domain;
 using NoMoreJockeys.Hubs;
 
 namespace NoMoreJockeys
@@ -21,21 +21,9 @@ namespace NoMoreJockeys
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllersWithViews();
+            services.AddControllers();
 
             services.AddSignalR();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("ClientPermission", policy =>
-                {
-                    policy.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .WithOrigins("*")
-                        .AllowCredentials();
-                });
-            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -60,16 +48,12 @@ namespace NoMoreJockeys
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            
-            app.UseCors("ClientPermission");
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
                 endpoints.MapHub<GameHub>("/games");
             });
 
@@ -82,6 +66,18 @@ namespace NoMoreJockeys
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            AddDummyGames();
+        }
+
+        private static void AddDummyGames()
+        {
+            var player1 = new Player("Alfred");
+            GameStore.AddGame(player1, 0, 0);
+
+            var player2 = new Player("Britney");
+            var game = GameStore.AddGame(player2, 0, 0);
+            game.Status = GameStatus.NormalTurn;
         }
     }
 }
