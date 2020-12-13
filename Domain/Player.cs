@@ -6,13 +6,13 @@ namespace NoMoreJockeys.Domain
     public class Player
     {
         [JsonIgnore]
-        public string Code { get; set; }
+        public string ConnectionId { get; set; }
         public string Name { get; set; }
         public int ChallengesRemaining { get; set; }
 
-        public Player(string name)
+        public Player(string connectionId, string name)
         {
-            Code = Guid.NewGuid().ToString();
+            ConnectionId = connectionId;
             Name = name;
             ChallengesRemaining = 3;
         }

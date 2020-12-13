@@ -6,7 +6,7 @@ namespace NoMoreJockeys.Hubs
 {
     public interface IGameClient
     {
-        Task GameCreated(List<Game> games);
+        Task GameListUpdated(List<GameOverview> games);
         Task GameUpdated(Game game);
     }
 }

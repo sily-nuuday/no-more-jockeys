@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 
 class GameListElement extends Component {
-	showGame() {
+    constructor(props) {
+        super(props);
+
+        this.joinGame = this.joinGame.bind(this);
+	}
+
+	joinGame() {
 		this.props.joinHandler(this.props.code);
 	}
 	
@@ -23,22 +29,23 @@ class GameListElement extends Component {
 	render() {
 		const notStarted = this.props.status === 0;
         return (
-            <li>
-				<span>{this.props.admin}'s game</span><br />
-				<span>Players: {this.props.players}</span><br />
-				<span>{this.translateStatus(this.props.status)}</span><br />
-				{ notStarted ? <button onClick={this.showGame.bind(this)}>Join</button> : null }
+			<li className="game-list-element">
+				<div>
+					<div className="left">
+						<span>{this.props.admin}'s game</span><br />
+						<span>Players: {this.props.players}</span><br />
+						<span>{this.translateStatus(this.props.status)}</span><br />
+					</div>
+					<div className="right">
+						<button>Spectate</button><br />
+						{ notStarted
+							? <button className="game-list-button" onClick={this.joinGame}>Join</button>
+							: <button className="game-list-button" disabled="disabled">Join</button> }
+					</div>
+				</div>
             </li>
         )
     }
-	
-	async populateGame() {
-		const response = await fetch('games/');
-		const games = await response.json();
-		this.setState((state) => {
-            return { games: games };
-        });
-	}
 }
 
 export default GameListElement;

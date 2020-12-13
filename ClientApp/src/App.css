@@ -1,11 +1,47 @@
-li {
-    padding: 5px;
-    margin: 5px;
-    background-color: lightgray;
-}
-ul {
+.game-list {
     padding: 0;
     margin: 0;
     width: fit-content;
     list-style-type: none;
+}
+.game-list-element {
+    padding: 5px;
+    margin: 5px;
+    background-color: lightgray;
+}
+.game-list-button {
+	width: 100%;
+}
+
+.create-game {
+    padding: 5px;
+    margin: 5px;
+    background-color: lightgray;
+}
+
+.player-dead {
+    text-decoration: line-through;
+}
+
+.number-field {
+	width: 40px;
+}
+
+.fit-content {
+	width: fit-content;
+}
+.align-center {
+	text-align: center;
+}
+.align-right {
+	text-align: right;
+}
+.left {
+	display: inline-block;
+	vertical-align:top;
+}
+.right {
+	display: inline-block;
+	vertical-align:top;
+	padding-left: 15px;
 }

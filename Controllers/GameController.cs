@@ -5,7 +5,7 @@ using NoMoreJockeys.Logic;
 
 namespace NoMoreJockeys.Controllers
 {
-    [Route("games")]
+    [Route("games2")]
     public class GameController : ControllerBase
     {
         [HttpGet("")]
@@ -19,7 +19,7 @@ namespace NoMoreJockeys.Controllers
         [HttpPost("")]
         public IActionResult CreateGame(string playerName, int answerSeconds, int challengeSeconds)
         {
-            Player admin = new Player(playerName);
+            Player admin = new Player("", playerName);
 
             GameStore.AddGame(admin, answerSeconds, challengeSeconds);
 
@@ -27,7 +27,7 @@ namespace NoMoreJockeys.Controllers
 
             // TODO _gameClient.GameCreated(_games.Values.ToList());
 
-            return Ok(admin.Code);
+            return Ok(admin.ConnectionId);
         }
 
         [HttpGet("{code}")]
@@ -56,7 +56,7 @@ namespace NoMoreJockeys.Controllers
             {
                 return StatusCode(403, "Can only change game rules before start");
             }
-            if (game.Players.First().Code != adminCode)
+            if (game.Players.First().ConnectionId != adminCode)
             {
                 return Unauthorized();
             }
@@ -82,14 +82,14 @@ namespace NoMoreJockeys.Controllers
                 return StatusCode(403, "Can only join game before start");
             }
 
-            var player = new Player(playerName);
+            var player = new Player("", playerName);
             game.Players.Add(player);
 
             // TODO Subscribe caller to game update
 
             // TODO _gameClient.GameUpdated(game);
 
-            return Ok(player.Code);
+            return Ok(player.ConnectionId);
         }
 
         [HttpPatch("{code}/start")]
@@ -104,7 +104,7 @@ namespace NoMoreJockeys.Controllers
             {
                 return StatusCode(403, "Can only start unstarted games");
             }
-            if (game.Players.First().Code != adminCode)
+            if (game.Players.First().ConnectionId != adminCode)
             {
                 return Unauthorized();
             }
@@ -126,7 +126,7 @@ namespace NoMoreJockeys.Controllers
             {
                 return NotFound();
             }
-            if (game.CurrentPlayer.Code != playerCode)
+            if (game.CurrentPlayer.ConnectionId != playerCode)
             {
                 return Unauthorized();
             }

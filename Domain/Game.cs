@@ -35,7 +35,7 @@ namespace NoMoreJockeys.Domain
 
         public Player FindActivePlayer(string code)
         {
-            return Players.FirstOrDefault(p => p.ChallengesRemaining > 0 && p.Code == code);
+            return Players.FirstOrDefault(p => p.ChallengesRemaining > 0 && p.ConnectionId == code);
         }
 
         public Player FindNextPlayer()

@@ -29,5 +29,10 @@ namespace NoMoreJockeys.Domain
 
             return game;
         }
+
+        public static void RemoveGame(string gameCode)
+        {
+            Games.Remove(gameCode);
+        }
     }
 }

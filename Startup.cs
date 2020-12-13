@@ -72,10 +72,10 @@ namespace NoMoreJockeys
 
         private static void AddDummyGames()
         {
-            var player1 = new Player("Alfred");
+            var player1 = new Player("", "Alfred");
             GameStore.AddGame(player1, 0, 0);
 
-            var player2 = new Player("Britney");
+            var player2 = new Player("", "Britney");
             var game = GameStore.AddGame(player2, 0, 0);
             game.Status = GameStatus.NormalTurn;
         }
