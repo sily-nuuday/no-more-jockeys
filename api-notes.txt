@@ -1,0 +1,112 @@
+no-more-jockeys-api
+- GET /games
+-- responds
+--- list of
+---- game code
+---- admin name
+---- player count
+---- status
+- POST /games
+-- accepts
+--- answer timeout (0 is infinite)
+--- challenge timeout (0 is infinite)
+--- player name
+-- responds
+--- game code
+--- admin code
+-- starts websocket to see joining players
+- PUT /games/{code}
+-- accepts
+--- admin code
+--- description
+--- timeout
+- GET /games/{code}
+-- responds
+--- game code
+--- status
+--- list of
+---- player name
+---- eliminated
+---- failed challenges remaining
+--- list of
+---- turn id
+---- player name
+---- answer
+---- rule
+--- current player
+-- starts websocket to keep view updated
+- PUT /games/{code}/join
+-- accepts
+--- player name
+-- responds
+--- player code
+-- starts websocket to see joining players, synchronize game start
+- POST /games/{code}/start
+-- accepts
+--- admin code
+- POST /games/{code}/answer
+-- accepts
+--- player code
+--- answer
+--- rule
+- POST /games{code}/name-another
+-- accepts
+--- player code
+--- turn id
+- POST /games/{code}/challenge
+-- accepts
+--- player code
+--- answer turn id
+--- rule turn id
+- POST /games/{code}/challenge/vote
+-- accepts
+--- player code
+--- vote
+
+no-more-jockeys screens
+- home page
+-- top
+--- input name (store in cookie on edit)
+-- left side
+--- create form
+---- answer time input field, default 30, checkbox (unchecking disables text field, sends 0)
+---- challenge time input field, default 120, checkbox (same as above)
+-- middle
+--- list of games
+---- spectate/view button, view for completed games
+---- join game, disabled for in progress/completed games
+- game page if not started
+-- left side
+--- list of players
+-- middle
+--- game settings (editable)
+--- start button if admin
+- game page if in progress
+-- left side
+--- list of players
+---- name (crossed out if eliminated)
+---- challenges remaining if alive (hearts?)
+-- middle top
+--- "You're up" in attention-grabbing color if current player is user
+--- current player if not user
+--- answer text field, rule text field prefixed with "No more...", if user is current player
+--- timer if not infinite
+-- middle top if name another
+--- "Name another"
+---- in attention-grabbing color if current player is user
+---- followed by current player if not user
+--- answer text field if user is current player
+-- middle top if challenge
+--- "Challenge" in attention-grabbing color
+--- "Yea" and "Nay" buttons if user is not challenged player
+--- timer if not infinite
+-- middle second-to-top
+--- previous answer
+--- name another button, rule dropdown, challenge button if user did not input previous answer
+-- middle below
+--- earlier answers, scrolling down
+- game page if completed
+-- left side
+--- list of players
+-- middle
+--- list of answers with attached rules
